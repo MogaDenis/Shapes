@@ -1,6 +1,9 @@
 package repository;
 
 import model.Shape;
+
+import java.util.Arrays;
+
 import exception.EmptyRepositoryException;
 import exception.OverflowException;
 
@@ -10,14 +13,14 @@ public class InMemoryRepository implements Repository
     private int size;
     private Shape[] shapes;
 
-    InMemoryRepository()
+    public InMemoryRepository()
     {
         this.capacity = 100;
         this.size = 0;
         this.shapes = new Shape[this.capacity];
     }
 
-    InMemoryRepository(int capacity)
+    public InMemoryRepository(int capacity)
     {
         this.capacity = capacity;
         this.size = 0;
@@ -28,7 +31,10 @@ public class InMemoryRepository implements Repository
     public void addShape(Shape shape) throws OverflowException
     {
         if (this.size == this.capacity)
-            throw new OverflowException("Full repository!");
+            throw new OverflowException("\nFull repository!\n");
+
+        if (shape == null)
+            return;
 
         this.shapes[this.size++] = shape;
     }
@@ -37,7 +43,7 @@ public class InMemoryRepository implements Repository
     public void removeShape(Shape shape) throws EmptyRepositoryException
     {
         if (this.size == 0)
-            throw new EmptyRepositoryException("Empty repository!");
+            throw new EmptyRepositoryException("\nEmpty repository!\n");
 
         for (int i = 0; i < this.size; i++)
         {
@@ -52,7 +58,7 @@ public class InMemoryRepository implements Repository
     @Override
     public Shape[] getShapes()
     {
-        return this.shapes;
+        return Arrays.copyOfRange(this.shapes, 0, this.size);
     }
 
     @Override
@@ -64,8 +70,8 @@ public class InMemoryRepository implements Repository
     @Override
     public boolean containsShape(Shape shape)
     {
-        for (Shape currentShape : this.shapes)
-            if (currentShape.equals(shape))
+        for (int i = 0; i < this.size; i++)
+            if (shape.equals(this.shapes[i]))
                 return true;
 
         return false;
@@ -76,17 +82,17 @@ public class InMemoryRepository implements Repository
     {
         int count = 0;
 
-        for (Shape currentShape : this.shapes)
-            if (currentShape.getVolume() > minVolume)
+        for (int i = 0; i < this.size; i++)
+            if (this.shapes[i].getVolume() > minVolume)
                 count++;
 
         Shape[] filteredShapes = new Shape[count];
 
         int index = 0;
 
-        for (Shape currentShape : this.shapes)
-            if (currentShape.getVolume() > minVolume)
-                filteredShapes[index++] = currentShape;
+        for (int i = 0; i < this.size; i++)
+            if (this.shapes[i].getVolume() > minVolume)
+                filteredShapes[index++] = this.shapes[i];
 
         return filteredShapes;
     }

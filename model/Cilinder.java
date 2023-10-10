@@ -50,7 +50,7 @@ public class Cilinder implements Shape
     @Override
     public String toString()
     {
-        return "Cilinder - base radius: " + String.valueOf(this.baseRadius) + " - volume: " + String.valueOf(this.getVolume());
+        return "Cilinder - base radius: " + String.valueOf(this.baseRadius)+ " - height: " + String.valueOf(this.height) + " - volume: " + String.valueOf(this.getVolume());
     }
 }
 
